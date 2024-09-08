@@ -1,26 +1,27 @@
 import graph
 
 if __name__ == '__main__':
-        edges = [
+    edges = [
         ('Seoul..Incheon', (1,100)),
-        ('Seoul..Suwon', 1),
-        ('Seoul..Wonju', 2),
-        ('Seoul..Daejeon', 2),
-        ('Suwon..Daejeon', 2),
-        ('Suwon..Gangneung', 3),
-        ('Wonju..Gangneung', 2),
-        ('Wonju..Daejeon', 3),
-        ('Gangneung..Daegu', 4),
-        ('Daejeon..Daegu', 1),
-        ('Daejeon..Gwangju', 2),
-        ('Daegu.Busan', 1),
-        ('Daegu..Gwangju', 3),
-        ('Gwangju..Busan', 3),
-        ('Gwangju..Jeju', 4),
-        ('Busan..Jeju', 5),
-        ('Deajeon.Incheon', 3),
-        ('Incheon.Busan', 4)
+        ('Seoul..Suwon', (1, 40)),
+        ('Seoul..Wonju', (2, 100)),
+        ('Seoul..Daejeon', (2, 100)),
+        ('Suwon..Daejeon', (2, 100)),
+        ('Suwon..Gangneung', (3, 100)),
+        ('Wonju..Gangneung', (2, 100)),
+        ('Wonju..Daejeon', (3, 100)),
+        ('Gangneung..Daegu', (4, 100)),
+        ('Daejeon..Daegu', (1, 80)),
+        ('Daejeon..Gwangju', (2, 40)),
+        ('Daegu.Busan', (1, 50)),
+        ('Daegu..Gwangju', (3, 100)),
+        ('Gwangju..Busan', (3, 30)),
+        ('Gwangju..Jeju', (4, 60)),
+        ('Busan..Jeju', (5, 70)),
+        ('Deajeon.Incheon', (3, 30)),
+        ('Incheon.Busan', (4, 20))
     ]
+    
     navigator = graph.PathNavigator(edges)
     require_nodes = ['Jeju']
 
