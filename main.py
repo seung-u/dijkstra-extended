@@ -1,7 +1,7 @@
 import graph
 
 if __name__ == '__main__':
-        edges = [
+    edges = [
         ('Seoul..Incheon', (1,100)),
         ('Seoul..Suwon', 1),
         ('Seoul..Wonju', 2),
