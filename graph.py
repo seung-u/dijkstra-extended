@@ -38,33 +38,53 @@ class IPathNavigatorExpansion(ABC):
         pass
 
 class PathNavigator(IPathNavigator, IPathNavigatorExpansion):
+    """
+    PathNavigator implements both IPathNavigator and IPathNavigatorExpansion interfaces.
+    It provides methods for finding optimal routes, calculating distances and costs,
+    and handling routes with required stopovers. The class uses Dijkstra's algorithm
+    for pathfinding and supports both regular and expanded functionality with custom filters.
+    """
 
     def __dijkstra(self, start, end, iteration_limit, filter=lambda x: True):
-        distances = {node: float('infinity') for node in self._graph}
-        costs = {node: float('infinity') for node in self._graph}
-        distances[start] = 0
-        pq = [(0, 0, start, [start])]
-        paths = []
+        try:
+            distances = {start: 0}
+            previous = {}
+            nodes = []
+            heapq.heappush(nodes, (0, start))
 
-        while pq:
-            (dist, cost, current, path) = heapq.heappop(pq)
-            if current == end:
-                paths.append((dist, cost, path))
-                if len(paths) == iteration_limit:
-                    return paths
+            iterations = 0
+            while nodes and iterations < iteration_limit:
+                current_distance, current_node = heapq.heappop(nodes)
+                
+                if current_node == end:
+                    path = []
+                    while current_node:
+                        path.append(current_node)
+                        current_node = previous.get(current_node)
+                    return path[::-1]
 
-            if dist > distances[current] or cost > costs[current]:
-                continue
+                if current_distance > distances.get(current_node, float('inf')):
+                    continue
 
-            for neighbor, (weight, edge_cost) in self._graph[current].items():
-                distance = dist + weight
-                total_cost = cost + edge_cost
-                if distance < distances[neighbor] and filter(total_cost):
-                    distances[neighbor] = distance
-                    costs[neighbor] = total_cost
-                    heapq.heappush(pq, (distance, total_cost, neighbor, path + [neighbor]))
+                for neighbor, weight in self.graph[current_node].items():
+                    if not filter(neighbor):
+                        continue
+                    distance = current_distance + weight
+                    if distance < distances.get(neighbor, float('inf')):
+                        distances[neighbor] = distance
+                        previous[neighbor] = current_node
+                        heapq.heappush(nodes, (distance, neighbor))
 
-        return paths
+                iterations += 1
+
+            raise ValueError(f"Path not found within {iteration_limit} iterations")
+
+        except KeyError as e:
+            raise ValueError(f"Node not found in graph: {e}")
+        except TypeError as e:
+            raise ValueError(f"Invalid data type in graph: {e}")
+        except Exception as e:
+            raise RuntimeError(f"An unexpected error occurred during pathfinding: {e}")
 
     def FindOptimalRoute(self, start, end, iteration_limit):
         nodes = [start, end]
