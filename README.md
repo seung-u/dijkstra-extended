@@ -106,3 +106,6 @@ All methods include try-except blocks to catch and print any exceptions that occ
 - The library uses Dijkstra's algorithm internally for pathfinding.
 - The expanded methods allow for more fine-grained control over path selection through the use of custom filter functions.
 - The graph is represented internally as a dictionary of dictionaries, allowing for efficient lookups.
+
+
+this readme is written by claude 3.5 sonnet
