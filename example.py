@@ -24,15 +24,15 @@ if __name__ == '__main__':
     navigator = graph.PathNavigator(edges)
     require_nodes = ['Jeju']
 
-    res = navigator.FindOptimalStopOverRoute('Seoul', 'Busan', required_nodes=require_nodes, iteration_limit=3)
-    res2 = navigator.FindOptimalRoute('Seoul', 'Busan', iteration_limit=3)
-    res3 = navigator.CalculateDistanceCost('Seoul', 'Busan', iteration_limit=3)
-    res4 = navigator.CalculateStopOverCost('Seoul', 'Busan', required_nodes=require_nodes, iteration_limit=3)
+    res = navigator.find_optimal_stopover_route('Seoul', 'Busan', required_nodes=require_nodes, iteration_limit=3)
+    res2 = navigator.find_optimal_route('Seoul', 'Busan', iteration_limit=3)
+    res3 = navigator.calculate_distance_cost('Seoul', 'Busan', iteration_limit=3)
+    res4 = navigator.calculate_stopover_cost('Seoul', 'Busan', required_nodes=require_nodes, iteration_limit=3)
 
-    res5 = navigator.FindOptimalStopOverRouteExpansion('Seoul', 'Busan', required_nodes=require_nodes, iteration_limit=3, filter=lambda x: x <= 810)
-    res6 = navigator.FindOptimalRouteExpansion('Seoul', 'Busan', iteration_limit=3, filter=lambda x: x <= 810)
-    res7 = navigator.CalculateDistanceCostExpansion('Seoul', 'Busan', iteration_limit=3, filter=lambda x: x <= 810)
-    res8 = navigator.CalculateStopOverCostExpansion('Seoul', 'Busan', required_nodes=require_nodes, iteration_limit=3, filter=lambda x: x <= 810)
+    res5 = navigator.find_optimal_stopover_route_expansion('Seoul', 'Busan', required_nodes=require_nodes, iteration_limit=3, filter=lambda x: x <= 810)
+    res6 = navigator.find_optimal_route_expansion('Seoul', 'Busan', iteration_limit=3, filter=lambda x: x <= 810)
+    res7 = navigator.calculate_distance_cost_expansion('Seoul', 'Busan', iteration_limit=3, filter=lambda x: x <= 810)
+    res8 = navigator.calculate_stopover_cost_expansion('Seoul', 'Busan', required_nodes=require_nodes, iteration_limit=3, filter=lambda x: x <= 810)
 
     print("Original methods results:")
     print(res)

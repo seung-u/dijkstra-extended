@@ -1,104 +1,71 @@
-# PathNavigator Library Documentation
+# Path Navigator Library Documentation
 
 ## Overview
-
-The PathNavigator library provides classes and methods for finding optimal routes in a graph, with support for required stopovers and custom filtering. It implements Dijkstra's algorithm for pathfinding and offers both basic and expanded functionality.
+The Path Navigator library provides an interface and implementation for finding optimal routes in a graph. It supports both direct routes and routes with stopovers, utilizing Dijkstra's algorithm for pathfinding.
 
 ## Classes
 
-### IPathNavigator (Abstract Base Class)
+### IPathNavigator
+An abstract base class defining the interface for path navigation.
 
-Defines the basic interface for path navigation.
+#### Methods
+- `find_optimal_route(start, end, iteration_limit)`: Finds the optimal route between two nodes.
+- `find_optimal_stopover_route(start, end, required_nodes, iteration_limit)`: Finds the optimal route with specified stopover nodes.
+- `calculate_distance_cost(start, end, iteration_limit)`: Calculates the distance cost for the optimal route.
+- `calculate_stopover_cost(start, end, required_nodes, iteration_limit)`: Calculates the stopover cost for the optimal route.
 
-#### Methods:
+### IPathNavigatorExpansion
+An abstract base class extending the path navigation interface with filtering capabilities.
 
-- `FindOptimalRoute(start, end, iteration_limit)`
-- `FindOptimalStopOverRoute(start, end, required_nodes, iteration_limit)`
-- `CalculateDistanceCost(start, end, iteration_limit)`
-- `CalculateStopOverCost(start, end, required_nodes, iteration_limit)`
-
-### IPathNavigatorExpansion (Abstract Base Class)
-
-Defines the expanded interface for path navigation with additional filtering capabilities.
-
-#### Methods:
-
-- `FindOptimalRouteExpansion(start, end, iteration_limit, filter)`
-- `FindOptimalStopOverRouteExpansion(start, end, required_nodes, iteration_limit, filter)`
-- `CalculateDistanceCostExpansion(start, end, iteration_limit, filter)`
-- `CalculateStopOverCostExpansion(start, end, required_nodes, iteration_limit, filter)`
+#### Methods
+- `find_optimal_route_expansion(start, end, iteration_limit, filter)`: Finds the optimal route with a filter.
+- `find_optimal_stopover_route_expansion(start, end, required_nodes, iteration_limit, filter)`: Finds the optimal stopover route with a filter.
+- `calculate_distance_cost_expansion(start, end, iteration_limit, filter)`: Calculates the distance cost with a filter.
+- `calculate_stopover_cost_expansion(start, end, required_nodes, iteration_limit, filter)`: Calculates the stopover cost with a filter.
 
 ### PathNavigator
+Implements both `IPathNavigator` and `IPathNavigatorExpansion`.
 
-Implements both `IPathNavigator` and `IPathNavigatorExpansion` interfaces.
+#### Constructor
+- `__init__(edges)`: Initializes the PathNavigator with a list of edges.
 
-#### Constructor:
+#### Private Methods
+- `__convert_to_graph(edges)`: Converts a list of edges to a graph representation.
+- `__find_paths(nodes, iteration_limit, filter)`: Finds paths between a list of nodes.
+- `__combine_paths(all_paths, iteration_limit)`: Combines multiple paths into complete paths.
+- `__dijkstra(start, end, iteration_limit, filter)`: Implements Dijkstra's algorithm for finding shortest paths.
 
-```python
-PathNavigator(edges)
-```
-
-- `edges`: A list of edges defining the graph. Each edge is represented as a tuple `(nodes, weight_cost)`, where `nodes` is a string in the format "start.end" for directed edges or "start..end" for undirected edges, and `weight_cost` is either a single value (used for both weight and cost) or a tuple `(weight, cost)`.
-
-#### Methods:
-
-1. `FindOptimalRoute(start, end, iteration_limit)`
-   - Finds the optimal route between start and end nodes.
-   - Returns a list of paths sorted by total distance.
-
-2. `FindOptimalStopOverRoute(start, end, required_nodes, iteration_limit)`
-   - Finds the optimal route between start and end nodes, passing through required nodes.
-   - Returns a list of paths sorted by total distance.
-
-3. `CalculateDistanceCost(start, end, iteration_limit)`
-   - Calculates the distance cost for optimal routes between start and end nodes.
-   - Returns a list of distances for the found paths.
-
-4. `CalculateStopOverCost(start, end, required_nodes, iteration_limit)`
-   - Calculates the distance cost for optimal routes between start and end nodes, passing through required nodes.
-   - Returns a list of distances for the found paths.
-
-5. `FindOptimalRouteExpansion(start, end, iteration_limit, filter)`
-   - Expanded version of FindOptimalRoute that includes a filter function to further constrain the path search.
-
-6. `FindOptimalStopOverRouteExpansion(start, end, required_nodes, iteration_limit, filter)`
-   - Expanded version of FindOptimalStopOverRoute that includes a filter function to further constrain the path search.
-
-7. `CalculateDistanceCostExpansion(start, end, iteration_limit, filter)`
-   - Expanded version of CalculateDistanceCost that includes a filter function to further constrain the distance calculation.
-
-8. `CalculateStopOverCostExpansion(start, end, required_nodes, iteration_limit, filter)`
-   - Expanded version of CalculateStopOverCost that includes a filter function to further constrain the distance calculation.
+#### Public Methods
+- `find_optimal_route(start, end, iteration_limit)`: Finds the optimal route between two nodes.
+- `find_optimal_stopover_route(start, end, required_nodes, iteration_limit)`: Finds the optimal route with specified stopover nodes.
+- `calculate_distance_cost(start, end, iteration_limit)`: Calculates the distance cost for the optimal route.
+- `calculate_stopover_cost(start, end, required_nodes, iteration_limit)`: Calculates the stopover cost for the optimal route.
+- `find_optimal_route_expansion(start, end, iteration_limit, filter)`: Finds the optimal route with a filter.
+- `find_optimal_stopover_route_expansion(start, end, required_nodes, iteration_limit, filter)`: Finds the optimal stopover route with a filter.
+- `calculate_distance_cost_expansion(start, end, iteration_limit, filter)`: Calculates the distance cost with a filter.
+- `calculate_stopover_cost_expansion(start, end, required_nodes, iteration_limit, filter)`: Calculates the stopover cost with a filter.
 
 ## Usage Example
-
 ```python
-# Create a PathNavigator instance
 edges = [
-    ("A.B", (5, 10)),
-    ("B.C", (3, 6)),
-    "A..C", 7  # Undirected edge with weight and cost both set to 7
+(("A", "B"), (1, 2)),
+(("B", "C"), (2, 3)),
+(("A", "C"), (4, 1)),
 ]
 navigator = PathNavigator(edges)
-
-# Find optimal route
-optimal_route = navigator.FindOptimalRoute("A", "C", 1)
+optimal_route = navigator.find_optimal_route("A", "C", 1)
 print(optimal_route)
-
-# Find optimal route with stopover
-stopover_route = navigator.FindOptimalStopOverRoute("A", "C", ["B"], 1)
-print(stopover_route)
-
-# Use expanded functionality with a custom filter
-def custom_filter(cost):
-    return cost <= 15
-
-expanded_route = navigator.FindOptimalRouteExpansion("A", "C", 1, custom_filter)
-print(expanded_route)
 ```
 
 ## Error Handling
+The library prints an error message if there is an issue parsing edges during graph conversion.
 
+
+## Dependencies
+- `heapq`: For priority queue implementation.
+- `itertools`: For combinatorial functions.
+- `collections`: For defaultdict usage.
+=======
 All methods include try-except blocks to catch and print any exceptions that occur during execution. In case of an error, an empty list or dictionary is typically returned.
 
 ## Notes
