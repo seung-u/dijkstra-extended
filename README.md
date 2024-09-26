@@ -60,7 +60,19 @@ print(optimal_route)
 ## Error Handling
 The library prints an error message if there is an issue parsing edges during graph conversion.
 
+
 ## Dependencies
 - `heapq`: For priority queue implementation.
 - `itertools`: For combinatorial functions.
 - `collections`: For defaultdict usage.
+=======
+All methods include try-except blocks to catch and print any exceptions that occur during execution. In case of an error, an empty list or dictionary is typically returned.
+
+## Notes
+
+- The library uses Dijkstra's algorithm internally for pathfinding.
+- The expanded methods allow for more fine-grained control over path selection through the use of custom filter functions.
+- The graph is represented internally as a dictionary of dictionaries, allowing for efficient lookups.
+
+
+> this readme is written by claude 3.5 sonnet
